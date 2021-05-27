@@ -1,5 +1,7 @@
 # LimpiezaDataset
 
+## **Autor**: Diego Refoyo Matellán 
+
 
 Este proyecto podría considerarse como una guía a seguir en un proyecto de análisis estadístico sobre un conjunto de datos.
 
