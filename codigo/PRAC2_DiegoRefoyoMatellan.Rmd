@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Tipología y Ciclo de Vida de los Datos"
 author: "Diego Refoyo Matellán"
 date: "24/5/2021"
 output: 
@@ -21,11 +21,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Descripción de la actividad
 
-A lo largo de esta actividad, se desarrolllará un caso práctico, cuyo objetivo principal es el tratamiento de un conjunto de datos o dataset, orientado a aprender a identificar los datos relevantes para unproyecto analítico. Además de hacer uso de las herramientas de integración, limpieza, validación y análisis de las mismas.
+A lo largo de esta actividad, se desarrolllará un caso práctico, cuyo objetivo principal es el tratamiento de un conjunto de datos o dataset, orientado a aprender a identificar los datos relevantes para un proyecto analítico. Además de hacer uso de las herramientas de integración, limpieza, validación y análisis de las mismas.
 
 ## Objetivos
 
-Los objetivos que se buscar lograr en esta actividad práctica son los
+Los objetivos que se buscan lograr en esta actividad práctica son los
 siguientes:
 
 - Aplicar los conocimientos adquiridos y su capacidad de resolución de
@@ -67,40 +67,41 @@ El conjunto de datos elegido ha sido 'Red Wine Quality', el cual se ha descargad
 
 Las variables contenidas en el dataset son las siguientes:
 
-1 fixed acidity: se refiere a la acidez fija del vino.
+1 **fixed acidity**: se refiere a la acidez fija del vino.
 
-2 - volatile acidity: la cantidad de ácido acético en el vino, que en niveles demasiado altos puede provocar un sabor desagradable a vinagre
+2 - **volatile acidity**: la cantidad de ácido acético en el vino, que en niveles demasiado altos puede provocar un sabor desagradable a vinagre
 
-3 - citric acid: se encuentra en pequeñas cantidades, el ácido cítrico puede agregar 'frescura' y sabor a los vinos
+3 - **citric acid**: se encuentra en pequeñas cantidades, el ácido cítrico puede agregar 'frescura' y sabor a los vinos
 
-4 - residual sugar: la cantidad de azúcar que queda después de que se detiene la fermentación, es raro encontrar vinos con menos de 1 gramo / litro y los vinos con más de 45 gramos / litro se consideran dulces
+4 - **residual sugar**: la cantidad de azúcar que queda después de que se detiene la fermentación, es raro encontrar vinos con menos de 1 gramo / litro y los vinos con más de 45 gramos / litro se consideran dulces
 
-5 - chlorides: la cantidad de sal en el vino
+5 - **chlorides**: la cantidad de sal en el vino
 
-6 - free sulfur dioxide: la forma libre de SO2 existe en equilibrio entre el SO2 molecular (como gas disuelto) y el ion bisulfito; Previene el crecimiento microbiano y la oxidación del vino.
+6 - **free sulfur dioxide**: la forma libre de SO2 existe en equilibrio entre el SO2 molecular (como gas disuelto) y el ion bisulfito; Previene el crecimiento microbiano y la oxidación del vino.
 
-7 - total sulfur dioxide: cantidad de formas libres y ligadas de SO2; en bajas concentraciones, el SO2 es mayormente indetectable en el vino, pero en concentraciones de SO2 libre superiores a 50 ppm, el SO2 se hace evidente en la nariz y el sabor del vino.
+7 - **total sulfur dioxide**: cantidad de formas libres y ligadas de SO2; en bajas concentraciones, el SO2 es mayormente indetectable en el vino, pero en concentraciones de SO2 libre superiores a 50 ppm, el SO2 se hace evidente en la nariz y el sabor del vino.
 
-8 - density: la densidad del agua es cercana a la del agua dependiendo del porcentaje de alcohol y contenido de azúcar
+8 - **density**: la densidad del vino es cercana a la del agua dependiendo del porcentaje de alcohol y contenido de azúcar
 
-9 - pH: describe qué tan ácido o básico es un vino en una escala de 0 (muy ácido) a 14 (muy básico); la mayoría de los vinos están entre 3-4 en la escala de pH
+9 - **pH**: describe qué tan ácido o básico es un vino en una escala de 0 (muy ácido) a 14 (muy básico); la mayoría de los vinos están entre 3-4 en la escala de pH
 
-10 -  sulphates: aditivo del vino que puede contribuir a los niveles de dióxido de azufre (SO2), que actúa como antimicrobiano y antioxidante.
+10 -  **sulphates**: aditivo del vino que puede contribuir a los niveles de dióxido de azufre (SO2), que actúa como antimicrobiano y antioxidante.
 
-11 - alcohol: el porcentaje de contenido de alcohol del vino
+11 - **alcohol**: el porcentaje de contenido de alcohol del vino
 
-Variable de salida (basada en datos sensoriales): 12 - quality (puntuación entre 0 y 10)
+Variable de salida (basada en datos sensoriales): 12 - **quality** (puntuación entre 0 y 10)
 
 ## Importancia y objetivos de los análisis
 
 ## Limpieza de los datos
 
-En primer lugar, antes de comenzar con la limpieza de datos, se cargará el dataset que se va a utilizar. Para ello, se utilizará la función read.cv(), que permite leer archivos de tipo .cvs conviertiéndolos en un objeto de tipo dataframe.
+En primer lugar, antes de comenzar con la limpieza de datos, se cargará el dataset que se va a utilizar. Para ello, se utilizará la función read.csv(), que permite leer archivos de tipo .cvs conviertiéndolos en un objeto de tipo dataframe.
 
 ```{r}
 library(kableExtra) # biblioteca empleada para mejorar la estética de las tablas
 library(scales) # biblioteca necesaria para escalar las variables
 library(nortest) # biblioteca necesaria para realizar pruebas de normalidad
+library(dplyr)
 ```
 
 
@@ -165,7 +166,7 @@ colSums(dataframe=="?") %>%
 
 ```
 
-Tal y como se esperaba, no existe ningún valor desconocido codificado como "?". Para estudiar otro tipo de codificaciones, bastaría con sustituit "?" por el valor deseado.
+Tal y como se esperaba, no existe ningún valor desconocido codificado como "?". Para estudiar otro tipo de codificaciones, bastaría con sustituir "?" por el valor deseado.
 
 
 ### Tratamiento de valores extremos
@@ -248,56 +249,17 @@ Como se puede observar en las salidas por pantalla de cada variable, en todas el
 
 Por lo tanto, se ha tomado la decisión de seguir trabajando con dichos valores sin modificarlos.
 
-### Reescalar variables
-
-Con el fin de evitar posibles problemas al realizar los posteriores análisis estadísticos, se ha decididido reescalar las variables mediante el método minmax para que todas ellas se encuentren en el mismo intevalos de valores. De esta forma, los resultados obtenidos en los análisis serán más fiables.
-
-El reescalado se llevará a cabo con el paquete de R *scales* que, por defecto, emplea la siguiente fórmula: 
-  
-  $x_{escalada} = \frac{x - min(x)}{max(x) - min(x)}$ 
-
-```{r}
-
-dataframe$fixed.acidity_escalado <- rescale(dataframe$fixed.acidity)
-dataframe$volatile.acidity_escalado <- rescale(dataframe$volatile.acidity)
-dataframe$citric.acid_escalado <- rescale(dataframe$citric.acid)
-dataframe$residual.sugar_escalado <- rescale(dataframe$residual.sugar)
-dataframe$chlorides_escalado <- rescale(dataframe$chlorides)
-dataframe$free.sulfur.dioxide_escalado <- rescale(dataframe$free.sulfur.dioxide)
-dataframe$total.sulfur.dioxide_escalado <- rescale(dataframe$total.sulfur.dioxide)
-dataframe$density_escalado <- rescale(dataframe$density)
-dataframe$pH_escalado <- rescale(dataframe$pH)
-dataframe$sulphates_escalado <- rescale(dataframe$sulphates)
-dataframe$alcohol_escalado <- rescale(dataframe$alcohol)
-dataframe$quality_escalado <- rescale(dataframe$quality)
-  
-
-```
-
-Una vez que se han reescalado las variables se crea un nuevo dataframe y se muestra un resumen de este, en el que se puede comprobar que todas se encuentran en la misma escala.
-
-```{r}
-
-dataframe_escalado <- dataframe[13:24] #se seleccionan solo las variables escaladas
-
-rmarkdown::paged_table(dataframe_escalado)
-
-summary(dataframe_escalado) %>%
-   kbl() %>%
-  kable_styling()%>%
-  row_spec(row = 0, bold = T, color = "white", background = "#BE8F00")
-
-```
-
 
 ### Exportación de los datos preprocesados
+
 
 Una vez que hemos acometido sobre el conjunto de datos inicial los procedimientos de
 integración, validación y limpieza anteriores, procedemos a guardar estos en un nuevo fichero denominado winequality-red_clean.csv.
 
+
 ```{r}
 
-write.csv(dataframe_escalado, "C:\\Users\\USUARIO\\Desktop\\Master\\Segundo_Cuatri\\Tipología y ciclo\\PRAC1\\winequality-red_clean.csv")
+write.csv(dataframe, "C:\\Users\\USUARIO\\Desktop\\Master\\Segundo_Cuatri\\Tipología y ciclo\\PRAC1\\winequality-red_clean.csv")
 
 ```
 
@@ -310,19 +272,22 @@ A continuación, se seleccionan los grupos dentro de nuestro conjunto de datos q
 resultar interesantes para analizar y/o comparar. No obstante, como se verá en el apartado
 consistente en la realización de pruebas estadísticas, no todos se utilizarán.
 
-Para ello, habrá que recodificar ciertas variables y convertirlas a culitativas. Esto se realizará para las siguientes variables: pH, alcohol y quality. En cada caso, se seguirá un criterio a la hora de recodificarlas.
+Para ello, habrá que recodificar ciertas variables y convertirlas a culitativas. Esto se realizará para las siguientes variables: *fixed_acidity*, *alcohol* y *quality*. En cada caso, se seguirá un criterio a la hora de recodificarlas.
 
-#### pH
+#### fixed_acidity
 
-Atendiendo a la definición de pH y la forma en la que se distingue en grupos en el ámbito científico, se clasificará como *ácido* aquellos valores de la variable pH < 0.5, como *neutro* para pH = 0.5 y *alcalino* para pH > 0.5.
+Para recodificar esta variable se tomará en cuenta la mediana de esta variable(7.9):
+
+  - Valores =< 7.9 -> Bajo
+  
+  - Valores > 7.9 -> Alto
 
 ```{r}
 
-for(i in 1:dim(dataframe_escalado)[1]){
+for(i in 1:dim(dataframe)[1]){
   
-  if(dataframe_escalado$pH_escalado[i] > 0.5) dataframe_escalado$pH_rec[i] <- "alcalino"
-  else if (dataframe_escalado$pH_escalado[i] < 0.5) dataframe_escalado$pH_rec[i] <- "acido"
-  else dataframe_escalado$pH_rec[i] <- "neutro"
+  if(dataframe$fixed.acidity[i] > 7.90) dataframe$fixed.acidity_rec[i] <- "Alto"
+  else if (dataframe$fixed.acidity[i] <= 7.9) dataframe$fixed.acidity_rec[i] <- "Bajo"
   
 }
 
@@ -331,25 +296,26 @@ for(i in 1:dim(dataframe_escalado)[1]){
 Se muestra la nueva variable para comprobar que la recodificación ha sido exitosa.
 
 ```{r}
-head(dataframe_escalado["pH_rec"],5)%>%
+head(dataframe["fixed.acidity_rec"],5)%>%
    kbl() %>%
   kable_styling()%>%
   row_spec(row = 0, bold = T, color = "white", background = "#BE8F00")
 
 ```
 
-Para las otras dos variables, se seguirá el mismo criterio en la recodificación. Se considerará un valor alto cuando la puntuación sea > 0.7 y bajo en el resto de los casos.
+Para las otras dos variables, se seguirá el mismo criterio en la recodificación. Se considerará como punto de corte los valores 10.2 y 6 para las variables alcohol y quality, respectivamente.
+
 
 ```{r}
 
-for(i in 1:dim(dataframe_escalado)[1]){
+for(i in 1:dim(dataframe)[1]){
   
-  if(dataframe_escalado$alcohol_escalado[i] > 0.7) dataframe_escalado$alcohol_rec[i] <- "alto"
-  else dataframe_escalado$alcohol_rec[i] <- "bajo"
+  if(dataframe$alcohol[i] > 10.2) dataframe$alcohol_rec[i] <- "Alto"
+  else dataframe$alcohol_rec[i] <- "Bajo"
   
   
-  if(dataframe_escalado$quality_escalado[i] > 0.7) dataframe_escalado$quality_rec[i] <- "alto"
-  else dataframe_escalado$quality_rec[i] <- "bajo"
+  if(dataframe$quality[i] > 6) dataframe$quality_rec[i] <- "Alto"
+  else dataframe$quality_rec[i] <- "Bajo"
   
 }
 
@@ -359,7 +325,7 @@ for(i in 1:dim(dataframe_escalado)[1]){
 Se muestran las nuevas variables obtenidas:
 
 ```{r}
-head(dataframe_escalado["alcohol_rec"],5)%>%
+head(dataframe["alcohol_rec"],5)%>%
    kbl() %>%
   kable_styling()%>%
   row_spec(row = 0, bold = T, color = "white", background = "#BE8F00")
@@ -367,7 +333,7 @@ head(dataframe_escalado["alcohol_rec"],5)%>%
 ```
 
 ```{r}
-head(dataframe_escalado["quality_rec"],5)%>%
+head(dataframe["quality_rec"],5)%>%
    kbl() %>%
   kable_styling()%>%
   row_spec(row = 0, bold = T, color = "white", background = "#BE8F00")
@@ -378,20 +344,19 @@ Ahora sí, se pueden definir los grupos de interés:
 
 ```{r}
 
-# Agrupación por tipo de pH
+# Agrupación por nivel de acidez fija del vino
 
-ph_acido <- dataframe_escalado[dataframe_escalado$pH_rec == "acido", ]
-ph_neutro <- dataframe_escalado[dataframe_escalado$pH_rec == "neutro", ]
-ph_alcalino <- dataframe_escalado[dataframe_escalado$pH_rec == "alcalino", ]
+fixed.acidity_alto <- dataframe[dataframe$fixed.acidity_rec == "Alto", ]
+fixed.acidity_bajo <- dataframe[dataframe$fixed.acidity_rec == "Bajo", ]
 
 # Agrupación por cantidad de alcohol
 
-alcohol_alto <- dataframe_escalado[dataframe_escalado$alcohol_rec == "alto", ]
-alcohol_bajo <- dataframe_escalado[dataframe_escalado$alcohol_rec == "bajo", ]
+alcohol_alto <- dataframe[dataframe$alcohol_rec == "Alto", ]
+alcohol_bajo <- dataframe[dataframe$alcohol_rec == "Bajo", ]
 
 #Agrupación por calidad
-quality_alto <- dataframe_escalado[dataframe_escalado$quality_rec == "alto", ]
-quality_bajo <- dataframe_escalado[dataframe_escalado$quality_rec == "bajo", ]
+quality_alto <- dataframe[dataframe$quality_rec == "Alto", ]
+quality_bajo <- dataframe[dataframe$quality_rec == "Bajo", ]
 ```
 
 
@@ -402,7 +367,7 @@ Para tener una primera impresión o idea acerca de si las variables que contiene
 
 ```{r}
 
-hist(x = dataframe_escalado$alcohol_escalado, main = "Distribución de la variable Alcohol", 
+hist(x = dataframe$alcohol, main = "Distribución de la variable Alcohol", 
      xlab = "Volumen de Alcohol", ylab = "Frecuencia",
      col = "blue")
 
@@ -412,17 +377,17 @@ Como se puede observar en el gráfico anterior, la variable *Alcohol* no parece 
 
 ```{r}
 
-hist(x = dataframe_escalado$pH_escalado, main = "Distribución de la variable pH", 
+hist(x = dataframe$fixed.acidity, main = "Distribución de la variable fixed.acidity", 
      xlab = "pH", ylab = "Frecuencia",
      col = "blue")
 
 ```
 
-Como se puede observar en el gráfico anterior, la variable *pH* podría seguir una distribución normal.
+Como se puede observar en el gráfico anterior, la variable *fixed.acidity* podría seguir una distribución normal.
 
 ```{r}
 
-hist(x = dataframe_escalado$quality_escalado, main = "Distribución de la variable Quallity", 
+hist(x = dataframe$quality, main = "Distribución de la variable Quallity", 
      xlab = "Quality", ylab = "Frecuencia",
      col = "blue")
 
@@ -440,21 +405,21 @@ significación prefijado α = 0, 05. Si esto se cumple, entonces se considera qu
 ```{r}
 
 alpha = 0.05
-col.names = colnames(dataframe_escalado)
+col.names = colnames(dataframe)
 
-for (i in 1:ncol(dataframe_escalado)) {
+for (i in 1:ncol(dataframe)) {
 
     if (i == 1) cat("Las variables que no siguen una distribución normal son las siguientes:\n")
     
-    if (is.integer(dataframe_escalado[,i]) | is.numeric(dataframe_escalado[,i])) {
+    if (is.integer(dataframe[,i]) | is.numeric(dataframe[,i])) {
     
-        p_val = ad.test(dataframe_escalado[,i])$p.value
+        p_val = ad.test(dataframe[,i])$p.value
 
         if (p_val < alpha) {
   
           cat(col.names[i])
           # Format output
-          if (i < ncol(dataframe_escalado) - 1) cat(", ")
+          if (i < ncol(dataframe) - 1) cat(", ")
 
           if (i %% 3 == 0) cat("\n")
         }
@@ -474,13 +439,13 @@ Las hipótesis que establece el test son las siguientes:
   - $H_{0}$: Existe  homocedasticidad entre las variables
   
   - $H_{1}$: No existe homocedasticidad entre las variables
-  
+
 
 ```{r}
 
-alto <- dataframe_escalado[dataframe_escalado$alcohol_rec == 'alto', "quality_escalado"]
+alto <- dataframe[dataframe$alcohol_rec == 'Alto', "quality"]
 
-bajo <- dataframe_escalado[dataframe_escalado$alcohol_rec == 'bajo', "quality_escalado"]
+bajo <- dataframe[dataframe$alcohol_rec == 'Bajo', "quality"]
 
 fligner.test(x = list(alto,bajo))
 ```
@@ -490,10 +455,12 @@ Como el p.valor obtenido es < 0.05, existen evidencias suficientes para rechazar
 
 ## Pruebas estadísticas
 
+
 ### ¿Qué variables cuantitativas influyen más en la calidad del vino?
 
 
 En primer lugar, se realizará un análisis de correlación entre las distintas variables para determinar cuáles de ellas ejercen una mayor influencia sobre la calidad del vino. Para ello, se utilizará el coeficiente de correlación de Spearman, puesto que se ha visto que las variables no siguen una distribución normal.
+
 
 ```{r, warning=FALSE, message=FALSE}
 
@@ -504,12 +471,12 @@ colnames(corr_matrix) <- c("estimate", "p-value")
 # Calcular el coeficiente de correlación para cada variable cuantitativa
 # con respecto al campo "precio"
 
-for (i in 1:(ncol(dataframe_escalado) - 1)) {
+for (i in 1:(ncol(dataframe) - 1)) {
 
-  if (is.integer(dataframe_escalado[,i]) | is.numeric(dataframe_escalado[,i])) {
+  if (is.integer(dataframe[,i]) | is.numeric(dataframe[,i])) {
 
-    spearman_test = cor.test(dataframe_escalado[,i],
-                    dataframe_escalado[,12],
+    spearman_test = cor.test(dataframe[,i],
+                    dataframe[,12],
                     method = "spearman")
 
     corr_coef = spearman_test$estimate
@@ -526,7 +493,7 @@ for (i in 1:(ncol(dataframe_escalado) - 1)) {
 
     corr_matrix <- rbind(corr_matrix, pair)
 
-    rownames(corr_matrix)[nrow(corr_matrix)] <- colnames(dataframe_escalado)[i]
+    rownames(corr_matrix)[nrow(corr_matrix)] <- colnames(dataframe)[i]
 }
 }
 
@@ -544,3 +511,190 @@ corr_matrix %>%
 En un primer momento, parece que ninguna variable del dataset se encuentra directamente correlacionada con la variable *quality*, ya que los valores obtenidos son lejanos de 1 ó -1(con la salvedad de la propia variable con ella misma).
 
 Sin embargo, podría darse el caso de que al analizar la dependencia entre más de una variables del dataset con la variable target, cambiaran los resultados.
+
+
+### ¿La calidad del vino es superior en caso de tener una cantidad de alcohol alta?
+
+La segunda prueba estadística que se aplicará consistirá en un contraste de hipótesis sobre dos muestras para determinar si la calidad del vino es superior dependiendo de la cantidad de alcohol de este (alto o bajo). Para ello, tendremos dos muestras: la primera de ellas se corresponderá con los vinos con baja cantidad de alcohol y, la segunda, con aquellos que presentan una cantidad alta.
+
+Se debe destacar que un test paramétrico como el que a continuación se utiliza necesita que los datos sean normales, si la muestra es de tamaño inferior a 30. Como en este caso, n > 30, el contraste de hipótesis siguiente es válido (aunque podría utilizarse un test no paramétrico como el de Mann-Whitney, que podría resultar ser más eficiente).
+
+Así, se plantea el siguiente contraste de hipótesis de dos muestras sobre la diferencia
+de medias, el cual es unilateral atendiendo a la formulación de la hipótesis alternativa:
+
+Las hipótesis que establece el test son las siguientes:
+
+  - $H_{0}$: $\mu_{1} - \mu_{2} = 0$
+  
+  - $H_{1}$: $\mu_{1} - \mu_{2} < 0$
+
+, donde µ1 es la media de la población de la que se extrae la primera muestra y µ2 es la media de la población de la que extrae la segunda. El test se realiza con una confianza del 95%.
+
+```{r}
+t.test(alcohol_alto$quality, alcohol_bajo$quality, alternative = "less")
+
+```
+
+Como el p-valor es > 0.05, no hay evidencias suficientes para rechazar la hipótesis nula que establecía que ambos grupos tienen la misma media. Por lo tanto, no se puede afirmar estadísticamente que haya diferencias entre la media de los dos grupos estudiados.
+
+Se realiza el mismo estudio pero en esta ocasión realizando la comparación en base a la acidez fija del vino. Los grupos estudiados son los que se crearon para esta variable en apartados anteriores.
+
+```{r}
+
+t.test(fixed.acidity_alto$quality, fixed.acidity_bajo$quality, alternative = "less")
+
+```
+
+Al igual que en el caso anterior, no hay evidencias suficientes para rechazar la hipótesis nula.
+
+
+### Modelo de regresión lineal
+
+
+Tal y como se planteó en los objetivos de la actividad, resultará de mucho interés poder
+realizar predicciones sobre el precio de un vehículo dadas sus características. Así, se calculará un modelo de regresión lineal utilizando regresores tanto cuantitativos como cualitativos con el que poder realizar las predicciones de la calidad del vno.
+
+Para obtener un modelo de regresión lineal considerablemente eficiente, se obtendrán varios modelos de regresión utilizando las variables que estén más correladas con respecto a la calidad del vino, según la tabla obtenido en el apartado 2.1.5. Así, de entre todos los modelos que se obtengan, se escogerá el mejor utilizando como criterio aquel que presente un mayor coeficiente de determinación (R2).
+
+
+```{r}
+
+# Regresores cuantitativos con mayor coeficiente
+# de correlación con respecto al precio
+
+alcohol <- dataframe$alcohol
+volatile.acidity <- dataframe$volatile.acidity
+sulphates <- dataframe$sulphates
+citrid.acid <- dataframe$citric.acid
+total.sulful.dioxide <- dataframe$total.sulfur.dioxide
+
+
+# Regresores cualitativos
+
+alcohol_rec <- dataframe$alcohol_rec
+fixed.acidity <- dataframe$fixed.acidity_rec
+
+# Variable a predecir
+
+quality <- dataframe$quality
+
+```
+
+
+```{r}
+
+# Generación de varios modelos
+
+modelo1 <- lm(quality ~ alcohol + sulphates + volatile.acidity + citrid.acid)
+modelo2 <- lm(quality ~ alcohol + sulphates + volatile.acidity + total.sulful.dioxide)
+modelo3 <- lm(quality ~ alcohol + sulphates + volatile.acidity + fixed.acidity)
+modelo4 <- lm(quality ~ alcohol_rec + sulphates + volatile.acidity + fixed.acidity)
+modelo5 <- lm(quality ~ alcohol_rec + sulphates + volatile.acidity + citrid.acid)
+```
+
+
+Para los anteriores modelos de regresión lineal múltiple obtenidos, se utilizará el
+coeficiente de determinación para medir la bondad de los ajustes.  El mejor modelo será el que mejor coeficiente presente.
+
+```{r}
+
+tabla.coeficientes <- matrix(c(1, summary(modelo1)$r.squared,
+2, summary(modelo2)$r.squared,
+3, summary(modelo3)$r.squared,
+4, summary(modelo4)$r.squared,
+5, summary(modelo5)$r.squared),
+ncol = 2, byrow = TRUE)
+colnames(tabla.coeficientes) <- c("Modelo", "R^2")
+tabla.coeficientes
+
+```
+
+Como se puede observar, el mejor modelo es el segundo. Sin embargo, todos los valores obtenidos están demasiado alejados del 1. Por lo tanto, ninguno de los modelos que se han obtenido se puede considerar válido para realizar una predicción sobre la calidad del vino.
+
+Una vez se ha visto que ninguno de los modelos obtenidos para la predicción es válido, hay que probar otras alternativas. En este caso, se realizará una regresión logística para la predicción. Para ello, será necesario recodificar de nuevo la variable calidad. Aprovechando el trabajo realizado anteriorente, se recodificará con valor 1, aquellas observaciones clasificadas como *alto*, y con valor 0, aquellas clasificadas como *bajo*.
+
+```{r}
+
+for (i in 1:dim(dataframe)[1]){
+  
+  if (dataframe$quality_rec[i] == 'Alto') dataframe$quality_rec_2[i] <- 1
+  
+  else dataframe$quality_rec_2[i] <- 0
+}
+
+```
+
+
+Tras recodificar la variable que se quiere predecir, se generarán diferentes modelos, tal y como se hizo con la regresión lineal.
+
+```{r}
+# Generación de varios modelos
+
+modelo1_logistico <- glm(quality ~ alcohol + sulphates + volatile.acidity + citrid.acid)
+modelo2_logistico <- glm(quality ~ alcohol + sulphates + volatile.acidity + total.sulful.dioxide)
+modelo3_logistico <- glm(quality ~ alcohol + sulphates + volatile.acidity + fixed.acidity)
+modelo4_logistico <- glm(quality ~ alcohol_rec + sulphates + volatile.acidity + fixed.acidity)
+modelo5_logistico <- glm(quality ~ alcohol_rec + sulphates + volatile.acidity + citrid.acid)
+
+```
+
+A diferencia de los modelos de regresión lineal, en los modelos logísticos no existe un equivalente a R2 que determine exactamente la varianza explicada por el modelo. Por lo tanto, como alternativa, se estudiará si los predictores de cada modelo contribuyen de manera significativa. Aquellos que lo hagan, son los que tienen un valor < 0.05 en la columna Pr(>Chi).
+
+```{r}
+
+anova(modelo1_logistico, test = "Chisq")
+
+```
+
+En esta ocasión, la variable citrid.acid no contribuye de manera significativa al modelo, por lo tanto, podría eliminarse.
+
+```{r}
+
+anova(modelo2_logistico, test = 'Chisq')
+
+```
+
+En esta ocasión, todas las variables contribuyen de manera significativa al modelo.
+
+
+```{r}
+
+anova(modelo3_logistico, test = "Chisq")
+
+```
+
+En esta ocasión, la variable fixed.acidity no contribuye al modelo.
+
+
+```{r}
+
+anova(modelo4_logistico, test = "Chisq")
+
+```
+
+Al igual que en el modelo anterior, ña variable fixed.acidity no contribuye al modelo.
+
+Por lo tanto, el modelo que se elegiría para realizar la predicción sería el segundo. Los resultados de este modelo son los siguientes:
+
+```{r}
+
+summary(modelo2_logistico)
+
+``` 
+
+Acorde al modelo, el logaritmo de los odds de que un vino tenga una calidad alta está positivamente relacionado con el valor de la cantidad de alcohol y de los sulfatos (coeficientes de regresión = 0.295, 0.712, respectivamente), mientras que estaría relacionada negativamente con el valor de las dos variables restantes. Esto significa que, por ejemplo, para la variable *alcohol*, por cada unidad que se incrementa esta variable se espera que el logaritmo de odds de la variable *quality* se incremente en promedio 0.259 unidades. Aplicando la inversa del logaritmo natural ( $e^{0.259}$ = 1.296) se obtiene que, por cada unidad que se incrementa la variable *alcohol*, los odds de que el vino sea de calidad alta se incrementan en promedio 1.296 unidades. No hay que confundir esto último con que la probabilidad de que el vino tenga calidad alta se incremente un 1.269%.
+
+
+# Conclusiones
+
+Como se ha visto, se han realizado tres tipos de pruebas estadísticas sobre un conjunto de
+datos que se correspondía con diferentes variables relativas a vinos con motivo de cumplir
+en la medida de lo posible con el objetivo que se planteaba al comienzo. Para cada una de
+ellas, se ha podido ver cuáles son los resultados que arrojan (entre otros, mediante tablas) y qué conocimientos pueden extraerse a partir de ellas.
+
+Así, el análisis de correlación y el contraste de hipótesis han permitido conocer cuáles de estas variables ejercen una mayor influencia sobre la calidad del vino, mientras que el
+modelo de regresión lineal obtenido no resulta de utilidad a la hora de realizar predicciones para esta variable dadas unas características concretas. Por lo tanto, se optó por utilizar una regresión logística en la que todas las variables contribuyeran de manera significativa al modelo.
+
+
+Previamente, se han sometido los datos a un preprocesamiento para manejar los casos de ceros o elementos vacíos y valores extremos (outliers). Para el caso del primero, se realizaron diferentes pruebas para detectar valores perdidos, pero no se encontró ningún caso. Para el caso del segundo, el cual constituye un punto delicado a tratar, se ha optado por incluir los valores extremos en los análisis dado que parecen no resultar del todo atípicos si los comparamos con los valores que toman las correspondientes
+variables para vinos que existen en el mercado actual.
